@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jonathanhu7/dual-token-authentication-demo/backend/internal/handlers/session"
+	"github.com/jonathanhu7/dual-token-authentication-demo/backend/internal/handlers/token"
 )
 
 type Server struct {
@@ -18,12 +18,12 @@ func NewServer(addr string) *Server {
 }
 
 func (s *Server) Run() error {
-	sessionRouter := http.NewServeMux()
-	sessionHandler := session.NewHandler()
-	sessionHandler.RegisterRoutes(sessionRouter)
+	tokenRouter := http.NewServeMux()
+	tokenHandler := token.NewHandler()
+	tokenHandler.RegisterRoutes(tokenRouter)
 
 	v1 := http.NewServeMux()
-	v1.Handle("/sessions/", http.StripPrefix("/sessions", sessionRouter))
+	v1.Handle("/tokens/", http.StripPrefix("/tokens", tokenRouter))
 
 	router := http.NewServeMux()
 	router.Handle("/api/v1/", http.StripPrefix("/api/v1", v1))
